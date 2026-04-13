@@ -1,4 +1,4 @@
-package com.sbstring.chat.entities;
+package com.substring.chat.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

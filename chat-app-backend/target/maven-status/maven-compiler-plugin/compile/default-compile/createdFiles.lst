@@ -1,0 +1,6 @@
+com/substring/chat/repositories/RoomRepository.class
+com/substring/chat/ChatAppBackendApplication.class
+com/substring/chat/controllers/ChatController.class
+com/substring/chat/entities/Room.class
+com/substring/chat/controllers/RoomController.class
+com/substring/chat/entities/Message.class

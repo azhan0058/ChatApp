@@ -1,4 +1,4 @@
-package com.sbstring.chat.entities;
+package com.substring.chat.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,5 +19,5 @@ public class Room {
       @Id
       private String id;
       private String roomId;
-      private List<Messages> messages= new ArrayList<>();
+      private List<Message> messages= new ArrayList<>();
 }

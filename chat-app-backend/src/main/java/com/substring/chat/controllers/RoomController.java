@@ -1,11 +1,12 @@
 package com.substring.chat.controllers;
-
+import com.substring.chat.repositories.RoomRepository;
 import com.substring.chat.entities.Room;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestController;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.substring.chat.entities.Message;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 @RestController
 @RequestMapping("/api/v1/rooms")
 public class RoomController {
@@ -23,23 +24,23 @@ public class RoomController {
             if(roomRepository.findByRoomId(roomId)!= null)
             {
                //room is already there
-               return ResponseEntity.badRequest().body("Room Already exist")
+               return ResponseEntity.badRequest().body("Room Already exist");
             }
 
             //create new room
             Room room = new Room();
             room.setRoomId(roomId);
             Room savedRoom = roomRepository.save(room);
-            return ResponseEntity.status(HttpStatus.CREATED).body(room);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedRoom);
            
      }
 
      
      //get room: join
      @GetMapping("/{roomId}")
-     public ResponseEntity<?> (@PathVariable String roomId) {
+     public ResponseEntity<?> getRoom(@PathVariable String roomId) {
      
-         Room room = roomRepository.findBYRoomId(roomId);
+         Room room = roomRepository.findByRoomId(roomId);
 
          if(room == null) {
              return ResponseEntity.badRequest().body("Room not found!");
@@ -52,7 +53,7 @@ public class RoomController {
      //get message of room
      
      @GetMapping("/{roomId}/messages")
-     public ResponseEntity<List<Message>>  (
+     public ResponseEntity<List<Message>> getMessage(
             @PathVariable String roomId,
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "size", defaultValue = "20", required = false) int size
@@ -64,11 +65,11 @@ public class RoomController {
           }
           //get message;
           //pagination
-          List<Message> message = room.getMessage();
+          List<Message> message = room.getMessages();
           int start = Math.max(0, message.size() - (page+1)* size);
           int end = Math.min(message.size(), start + size);
           List<Message> paginatedMessage = message.subList(start, end);
-          return ResponseEntitty.ok(message);
+          return ResponseEntity.ok(paginatedMessage);
 }
      
 

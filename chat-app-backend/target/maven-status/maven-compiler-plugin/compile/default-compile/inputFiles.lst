@@ -1,0 +1,6 @@
+/workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/ChatAppBackendApplication.java
+/workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/controllers/ChatController.java
+/workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/controllers/RoomController.java
+/workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/entities/Message.java
+/workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/entities/Room.java
+/workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/repositories/RoomRepository.java
