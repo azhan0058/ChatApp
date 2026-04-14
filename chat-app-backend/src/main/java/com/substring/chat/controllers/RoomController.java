@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping("/api/v1/rooms")
+@CrossOrigin("*")
 public class RoomController {
 
      private RoomRepository roomRepository;
@@ -53,7 +54,7 @@ public class RoomController {
      //get message of room
      
      @GetMapping("/{roomId}/messages")
-     public ResponseEntity<List<Message>> getMessage(
+     public ResponseEntity<List<Message>> getMessages(
             @PathVariable String roomId,
             @RequestParam(value = "page", defaultValue = "0", required = false) int page,
             @RequestParam(value = "size", defaultValue = "20", required = false) int size
@@ -65,11 +66,11 @@ public class RoomController {
           }
           //get message;
           //pagination
-          List<Message> message = room.getMessages();
-          int start = Math.max(0, message.size() - (page+1)* size);
-          int end = Math.min(message.size(), start + size);
-          List<Message> paginatedMessage = message.subList(start, end);
-          return ResponseEntity.ok(paginatedMessage);
+          List<Message> messages = room.getMessages();
+          int start = Math.max(0, messages.size() - (page+1)*size);
+          int end = Math.min(messages.size(), start + size);
+          List<Message> paginatedMessages = messages.subList(start, end);
+          return ResponseEntity.ok(paginatedMessages);
 }
      
 
