@@ -2,14 +2,21 @@ import React, { useRef, useState } from 'react'
 import { MdAttachFile, MdSend } from "react-icons/md";
 
 
-const [messages, setMessages] = useState([]);
-const[input, setInput] = useState("");
-const inputRef = useRef(null);
-const chatBoxRef = useRef(null); 
-const[stompClient, setStompClient] = useState(null);
-const[roomId, setRoomId] = useState("");
+
 
 const ChatPage = () => {
+    const [messages, setMessages] = useState([
+        {
+            content: "hello ?",
+            sender: "Arish",
+        }
+    ]);
+    const [input, setInput] = useState("");
+    const inputRef = useRef(null);
+    const chatBoxRef = useRef(null); 
+    const [stompClient, setStompClient] = useState(null);
+    const [roomId, setRoomId] = useState("");
+    const [currentUser] = useState("Arish");
   return (
     <div>
         {/*this is header portion */}
@@ -32,9 +39,20 @@ const ChatPage = () => {
 
         {/*this is chat portion*/}
         <main className='py-20 w-2/3 dark:bg-slate-700 mx-auto  h-screen overflow-auto'> 
-            <div className='message-container'>
-                <h1>hi</h1>
-            </div>
+            {messages.map((message,index) => (
+                    <div key={index} className={`flex ${message.sender==currentUser? "justify-end":"justify-start" }`}>
+                        <div className= {`my-2 ${message.sender==currentUser? "bg-green-800 ":"bg-gray-800"} p-2 max-w-xs rounded`}>
+                            <div className='flex flex-row gap-2'>
+                                <img className='h-10 w-10' src='' alt=''/>
+                                <div className='flex flex-col gap-1'>
+                                    <p className='text-sm font-bold'>{message.sender}</p>
+                                    <p>{message.content}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            }
         </main>
 
         {/*this is input message container portion */}
