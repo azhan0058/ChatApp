@@ -17,6 +17,8 @@ const ChatPage = () => {
     const [stompClient, setStompClient] = useState(null);
     const [roomId, setRoomId] = useState("");
     const [currentUser] = useState("Arish");
+
+    
   return (
     <div>
         {/*this is header portion */}
