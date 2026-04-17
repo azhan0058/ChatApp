@@ -1,10 +1,25 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { MdAttachFile, MdSend } from "react-icons/md";
+import { useNavigate } from 'react-router';
+import useChatContext from '../context/ChatContext';
 
 
 
 
 const ChatPage = () => {
+
+    const {roomId, currentUser, connected} = useChatContext();
+
+    const navigate = useNavigate();
+    useEffect(( )=> {
+        if(!connected) {
+            navigate('/')
+        }
+        
+    }, [connected, roomId, currentUser])
+
+
+
     const [messages, setMessages] = useState([
         {
             content: "hello ?",
@@ -15,10 +30,14 @@ const ChatPage = () => {
     const inputRef = useRef(null);
     const chatBoxRef = useRef(null); 
     const [stompClient, setStompClient] = useState(null);
-    const [roomId, setRoomId] = useState("");
-    const [currentUser] = useState("Arish");
 
-    
+    //page init
+    //load messages
+    //init stomp client
+      //subscribe stomp client
+    //send message handler
+
+
   return (
     <div>
         {/*this is header portion */}

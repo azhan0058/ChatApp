@@ -1,14 +1,17 @@
-import {React , useState} from 'react'
+import {useState} from 'react'
 import ChatIcon from "../assets/react.svg"
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
-import { api } from '../services/RoomService';
+import { api, joinChatApi } from '../services/RoomService';
+import useChatContext from '../context/ChatContext';
 
 
 
 const JoinCreateChat = () => {
 
   const navigate = useNavigate();
+
+  const {roomId, userName, setRoomId, setCurrentUser, setConnected} = useChatContext();
 
   const [detail, setDetail]= useState({
     roomId: "",
@@ -22,7 +25,7 @@ const JoinCreateChat = () => {
     })
   }
 
-  function joinChat(event) {
+ async function joinChat(event) {
   event.preventDefault();
 
   if (!detail.userName.trim()) {
@@ -34,12 +37,19 @@ const JoinCreateChat = () => {
     toast.error("Please enter room ID");
     return;
   }
+  
+  try{
+    const room = await joinChatApi(detail.roomId);
+    toast.success("Joined room successfully !!");
+    setCurrentUser(detail.userName);
+      setRoomId(room.roomId);
+      setConnected(true);
+      navigate(`/chat`);
 
-  toast.success("Joining room...");
-
-  navigate(`/chat/${detail.roomId}`, {
-    state: { userName: detail.userName }
-  });
+  }catch(error){
+    console.log(error)
+    toast.error("Error in joining room !!")
+  }
 }
 
   async function createRoom(event){
@@ -63,7 +73,13 @@ const JoinCreateChat = () => {
       console.log(response)
       toast.success("Room Created Successfully");
       //join the room 
-      joinChat();
+      setCurrentUser(detail.userName);
+      setRoomId(response.roomId);
+      setConnected(true);
+
+      navigate(`/chat`);
+      //forward to chat page....
+
     }catch(error) {
       console.log(error);
       if(error.response && error.response.status === 400) {
