@@ -6,7 +6,7 @@ import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import { baseURL } from '../config/AxiosHelper';
 import toast from 'react-hot-toast'; 
-import { getMessages } from "../services/ChatService";
+import { getMessages } from "../services/RoomService";
 import { formatTimeAgo } from '../config/helper';
 
 
@@ -43,14 +43,12 @@ const ChatPage = () => {
             console.error("Error fetching message history:", error);
             toast.error("Failed to load history.");
          }
-        } if(connected)
-        {loadOldMessages();}    
-    }, []);
-
+        } if (connected && roomId) loadOldMessages();    
+             }, [roomId, connected]);  
         //scroll down
         useEffect(() => {
             if (chatBoxRef.current) {
-                  chatBoxRef.current.scroll({
+                  chatBoxRef.current.scrollTo({
                     top: chatBoxRef.current.scrollHeight,
                     behavior: "smooth", // Makes it look nice
                   });
@@ -63,37 +61,36 @@ const ChatPage = () => {
       //subscribe stomp client
 
 
-      useEffect(()=>{
-        //stomp client config
-        const connectWebSocket =()=> {
-            //sockjs
-            const sock = new SockJS(`${baseURL}/chat`)
-            const client = Stomp.over(sock)
+      useEffect(() => {
+    let client = null; // 1. Define at the top of the effect scope
 
-            client.connect({}, ()=>{
+    const connectWebSocket = () => {
+        const sock = new SockJS(`${baseURL}/chat`);
+        client = Stomp.over(sock); // 2. Assign to the scoped variable
 
-                setStompClient(client);
-
-                toast.success("connected");
-                client.subscribe(`/topic/room/${roomId}`, (message) => {
-                    console.log(message);
+        client.connect({}, () => {
+            setStompClient(client);
+            toast.success("connected");
+            client.subscribe(`/topic/room/${roomId}`, (message) => {
                 const newMessage = JSON.parse(message.body);
                 setMessages((prev) => [...prev, newMessage]);
-
-
-            }
-                )
-
             });
+        });
+    };
 
+    if (connected && roomId) {
+        connectWebSocket();
+    }
 
+    return () => {
+        if (client) { // 3. Now this block can see the 'client' variable
+            client.disconnect(() => {
+                console.log("Cleanup: Disconnected");
+            });
         }
+    };
+}, [roomId, connected]);
 
-        if (connected){
-            connectWebSocket();
-        }
-
-      },[roomId])
 
 
     //send message handler
@@ -160,7 +157,7 @@ const handleLogOut = () => {
                     <div key={index} className={`flex ${message.sender==currentUser? "justify-end":"justify-start" }`}>
                         <div className= {`my-2 ${message.sender==currentUser? "bg-green-800 ":"bg-gray-800"} p-2 max-w-xs rounded`}>
                             <div className='flex flex-row gap-2'>
-                                <img className='h-10 w-10' src='' alt=''/>
+                                <img className='h-10 w-10' src='https://cdn-icons-png.flaticon.com/128/9172/9172473.png' alt=''/>
                                 <div className='flex flex-col gap-1'>
                                     <p className='text-sm font-bold'>{message.sender}</p>
                                     <p>{message.content} </p>
