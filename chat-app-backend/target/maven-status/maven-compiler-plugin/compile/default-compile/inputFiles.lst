@@ -1,4 +1,5 @@
 /workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/ChatAppBackendApplication.java
+/workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/config/AppConstants.java
 /workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/config/WebSocketConfig.java
 /workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/controllers/ChatController.java
 /workspaces/ChatApp/chat-app-backend/src/main/java/com/substring/chat/controllers/RoomController.java

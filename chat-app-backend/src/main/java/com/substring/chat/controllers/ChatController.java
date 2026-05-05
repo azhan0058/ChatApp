@@ -15,7 +15,7 @@ import com.substring.chat.playload.MessageRequest;
 import com.substring.chat.repositories.RoomRepository;
 
 @Controller
-@CrossOrigin("https://super-waddle-7666w46vxqp2qpp-5173.app.github.dev")
+@CrossOrigin("https://javachatapp-19mq.onrender.com")
 public class ChatController{
 
 

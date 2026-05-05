@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequestMapping("/api/v1/rooms")
-@CrossOrigin("https://super-waddle-7666w46vxqp2qpp-5173.app.github.dev")
+@CrossOrigin("https://javachatapp-19mq.onrender.com")
 public class RoomController {
 
      private RoomRepository roomRepository;
